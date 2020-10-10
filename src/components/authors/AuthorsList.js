@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const AuthorsList = ({ authors, onDeleteClick }) => {
   return (
@@ -16,7 +17,9 @@ const AuthorsList = ({ authors, onDeleteClick }) => {
           return (
             <tr key={author.id}>
               <td>{author.id}</td>
-              <td>{author.name}</td>
+              <td>
+                <Link to={"/author/" + author.id}>{author.name}</Link>
+              </td>
               <td className="">
                 <button
                   className="btn btn-outline-danger float-right"

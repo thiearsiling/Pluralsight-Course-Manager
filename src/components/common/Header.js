@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
+import { loadCourses } from "../../redux/actions/courseActions";
 
-const Header = ({ courses }) => {
+const Header = ({ courses, loadCourses }) => {
   const activeStyle = { color: "#F15B2A" };
+
+  useEffect(() => {
+    loadCourses();
+  }, []);
 
   return (
     <nav>
@@ -29,6 +34,7 @@ const Header = ({ courses }) => {
 
 Header.propTypes = {
   courses: PropTypes.array.isRequired,
+  loadCourses: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -37,4 +43,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Header);
+const mapDispathToProps = {
+  loadCourses,
+};
+
+export default connect(mapStateToProps, mapDispathToProps)(Header);

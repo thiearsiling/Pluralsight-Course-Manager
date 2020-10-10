@@ -57,10 +57,7 @@ const CoursesPage = (props) => {
           >
             Add Course
           </button>
-          <CourseList
-            courses={props.courses}
-            onDeleteClick={handleDeleteCourse}
-          />
+          <CourseList courses={courses} onDeleteClick={handleDeleteCourse} />
         </React.Fragment>
       )}
     </React.Fragment>

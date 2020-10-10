@@ -101,7 +101,7 @@ const getCourseBySlug = (courses, slug) => {
 const mapStateToProps = (state, ownProps) => {
   const slug = ownProps.match.params.slug;
   const course = slug ? getCourseBySlug(state.courses, slug) : newCourse;
-
+  console.log(ownProps);
   return {
     course,
     courses: state.courses,

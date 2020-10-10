@@ -7,7 +7,13 @@ import AuthorsList from "./AuthorsList";
 import { Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const AuthorsPage = ({ authors, loadAuthors, deleteAuthor, loading }) => {
+const AuthorsPage = ({
+  authors,
+  loadAuthors,
+  deleteAuthor,
+  courses,
+  loading,
+}) => {
   const [redirectToAddAuthorPage, setRedirectToAddAuthorPage] = useState(false);
   useEffect(() => {
     if (authors.length === 0) {
@@ -18,13 +24,17 @@ const AuthorsPage = ({ authors, loadAuthors, deleteAuthor, loading }) => {
   }, []);
 
   const handleDeleteAuthor = (author) => {
-    // TODO: Adicionar validação para não permitir a exclusão quando o autor tiver curso
-    toast.success("Author deleted");
-    deleteAuthor(author).catch((error) => {
-      toast.error("Delete failed. " + error.message, { autoClose: false });
-    });
+    if (courses.length > 0) {
+      if (courses.find((c) => c.authorId === author.id) !== undefined) {
+        toast.error("This author have courses. It's not possible to delete it");
+      } else {
+        toast.success("Author deleted");
+        deleteAuthor(author).catch((error) => {
+          toast.error("Delete failed. " + error.message, { autoClose: false });
+        });
+      }
+    }
   };
-
   return (
     <React.Fragment>
       {redirectToAddAuthorPage && <Redirect to="/author" />}
@@ -49,6 +59,7 @@ const AuthorsPage = ({ authors, loadAuthors, deleteAuthor, loading }) => {
 const mapStateToProps = (state) => {
   return {
     authors: state.authors,
+    courses: state.courses,
     loading: state.apiCallStatus > 0,
   };
 };
@@ -57,6 +68,7 @@ AuthorsPage.propTypes = {
   authors: PropTypes.array.isRequired,
   loadAuthors: PropTypes.func.isRequired,
   deleteAuthor: PropTypes.func.isRequired,
+  courses: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired,
 };
 
